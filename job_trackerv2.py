@@ -3,7 +3,14 @@ import sys
 from rich.console import Console
 from rich.table import Table
 from rich import box
+import os
 
+def init_file():
+    if not os.path.exists("job_tracker.csv"):
+        with open("job_tracker.csv", "w", newline="") as f:
+            fieldnames = ["Company", "Job Title", "Date", "Status"]
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
 
 def add_job():
     company_name = input("Company Name: ")
@@ -121,6 +128,7 @@ def one_commandline_limit():
 
 
 def main():
+    init_file()
     one_commandline_limit()
     if sys.argv[1] == "add":
         add_job()
