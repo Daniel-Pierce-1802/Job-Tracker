@@ -101,13 +101,26 @@ def search():
 
 def edit_status():
     job = input("Company Name: ")
-    new_status = input("New Status: ")
+    companies = []
     with open("job_tracker.csv", "r") as f:
         reader = csv.DictReader(f, delimiter=",")
         applications = list(reader)
         for row in applications:
             if job == row["Company"]:
-                row.update({"Status": new_status})
+                companies.append(row["Company"])
+        if len(companies) > 1:
+            title = input("More than one entry found for entered company name\nJob Title: ")
+            new_status = input("New Status: ")
+            for row in applications:
+                if title == row["Job Title"]:
+                    row.update({"Status": new_status})
+        elif len(companies) == 1:
+            new_status = input("New Status: ")
+            for row in applications:
+                if job == row["Company"]:
+                    row.update({"Status": new_status})
+        elif len(companies) == 0:
+            print("Company does not exist in database")
 
     with open("job_tracker.csv", "w") as f:
         fieldnames = ["Company", "Job Title", "Date", "Status"]
